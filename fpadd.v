@@ -15,6 +15,7 @@ module fpadd (
 	reg 			 done;
 	reg [31:0]	sum;
 	reg expdiff;
+	reg [4:0]	ctr;
 
 always @(posedge clk)
 
@@ -29,6 +30,7 @@ always @(posedge clk)
 	if(start)
 	begin
 	done <=0;
+	ctr<=24;
 	signa <= a[31];
 	signb <= b[31];
 	signr<=1'b0;
@@ -36,7 +38,9 @@ always @(posedge clk)
 	expb <= b[30:23];
 	manta <= {1'b1, a[22:0]};
 	mantb <= {1'b1, b[22:0]};
-
+    end
+    else
+    begin
 	if((expa == 0) && (manta == 0))
 	begin
 		mantr<=mantb;
@@ -66,6 +70,11 @@ always @(posedge clk)
 	end
 	else
 	begin
+	if(expa==expb)
+	begin
+		expdiff = expa-expb;
+		expr= expb;
+	end	
 	if(expa>expb)
 	begin
 		expdiff = expa-expb;
@@ -77,22 +86,48 @@ always @(posedge clk)
 		expdiff = expb-expa;
 		manta = manta>>expdiff;
 		expr= expb;
-	end	
+	end
+
+	if(signa)
+	begin
+	manta=-manta;	
+	end
+
+	if(signb)
+	begin
+	mantb=-mantb;	
+	end
+	
 	mantr = manta+mantb;
+
+	if(mantr<0)
+	begin
+		signr<=1;
+		mantr<=-mantr;
+	end
+
 	if(mantr[25])
 		begin
 			mantr <= mantr >> 1;
 			expr  <= expr + 1;
 		end
-	end
-	sum<={signr,expr,mantr};
-	end
-	
 	else
 	begin
-		done<=1;
+
+	if ((ctr > 0) && mantr[ctr]!=1) 
+	  		begin
+	  	    	mantr<=mantr<<1;
+	     		expr<=expr-1;
+	     		ctr<=ctr+1;
+	  		end
+	end
+	
+
+	sum<={signr,expr,mantr};
+	done<=1;
 	end
 
+	end
 	end
 endmodule
 
