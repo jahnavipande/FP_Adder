@@ -122,7 +122,7 @@ always @(posedge clk)
 	  		end
 	
 
-	sum<={signr,expr,mantr[23:1]};
+	sum<={signr,expr,mantr[22:0]};
 	done<=1;
 	end
 
