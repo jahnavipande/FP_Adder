@@ -90,15 +90,15 @@ always @(posedge clk)
 
 	if(signa)
 	begin
-	manta=-manta;	
+	manta<=-manta;	
 	end
 
 	if(signb)
 	begin
-	mantb=-mantb;	
+	mantb<=-mantb;	
 	end
 	
-	mantr = manta+mantb;
+	mantr <= manta+mantb;
 
 	if(mantr<0)
 	begin
@@ -114,7 +114,7 @@ always @(posedge clk)
 	else
 	begin
 
-	if ((ctr >= 0) && mantr[ctr]!=1) 
+	if ((ctr >= 0) && (mantr[ctr]!=1)) 
 	  		begin
 	  	    	mantr<=mantr<<1;
 	     		expr<=expr-1;
