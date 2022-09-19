@@ -114,12 +114,19 @@ always @(posedge clk)
 		end
 	
 
-	if ((ctr >= 0) && (mantr[ctr]!=1)) 
-	  		begin
-	  	    	mantr<=mantr<<1;
-	     		expr<=expr-1;
-	     		ctr<=ctr-1;
-	  		end
+	if (ctr >= 0)
+	    begin
+	   if(mantr[ctr]!=1)
+	  	begin
+	  	    mantr<=mantr<<1;
+	     	    expr<=expr-1;
+		    ctr<=ctr-1;
+		end
+		else
+			begin
+				ctr<=-1;
+			end	
+	      end
 	
 
 	sum<={signr,expr,mantr[22:0]};
