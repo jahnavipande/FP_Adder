@@ -12,7 +12,7 @@ module fpadd (
 	reg [23:0] 	manta, mantb;
 	reg [24:0]	mantr;
 	reg [0:0] 	signa, signb, signr;
-	reg [0:0]	done;
+	reg 		done;
 	reg [31:0]	sum;
 	reg [7:0]	expdiff;
 	reg [4:0]	ctr;
