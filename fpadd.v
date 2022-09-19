@@ -30,7 +30,7 @@ always @(posedge clk)
 	if(start)
 	begin
 	done <=0;
-	ctr<=23;
+	ctr<=24;
 	expr<=0;
 	sum<=0;
 	signa <= a[31];
@@ -114,9 +114,9 @@ always @(posedge clk)
 		end
 	
 
-	if (ctr >= 0)
+	if (ctr > 0)
 	    begin
-	   if(mantr[ctr]!=1)
+		    if(mantr[ctr-1]!=1)
 	  	begin
 	  	    mantr<=mantr<<1;
 	     	    expr<=expr-1;
@@ -124,7 +124,7 @@ always @(posedge clk)
 		end
 		else
 			begin
-				ctr<=-1;
+				ctr<=0;
 			end	
 	      end
 	
