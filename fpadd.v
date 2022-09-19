@@ -40,7 +40,7 @@ always @(posedge clk)
 	expb <= b[30:23];
 	manta <= {1'b1, a[22:0]};
 	mantb <= {1'b1, b[22:0]};
-    end
+    	end
     else
     begin
 	if((expa == 0) && (manta == 0))
@@ -74,22 +74,21 @@ always @(posedge clk)
 	begin
 	if(expa==expb)
 	begin
-		expdiff = expa-expb;
-		expr= expb;
+		expr<= expb;
 	end	
 	if(expa>expb)
 	begin
-		expdiff = expa-expb;
-		mantb = mantb>>expdiff;
-		expr= expb;
+		expdiff <= expa-expb;
+		mantb <= mantb>>expdiff;
+		expr<= expa;
 	end	
 	if(expb>expa)
 	begin
-		expdiff = expb-expa;
-		manta = manta>>expdiff;
-		expr= expb;
+		expdiff <= expb-expa;
+		manta <= manta>>expdiff;
+		expr<= expb;
 	end
-
+		
 	if(signa)
 	begin
 	manta<=-manta;	
@@ -113,8 +112,7 @@ always @(posedge clk)
 			mantr <= mantr >> 1;
 			expr  <= expr + 1;
 		end
-	else
-	begin
+	
 
 	if ((ctr >= 0) && (mantr[ctr]!=1)) 
 	  		begin
@@ -122,7 +120,6 @@ always @(posedge clk)
 	     		expr<=expr-1;
 	     		ctr<=ctr-1;
 	  		end
-	end
 	
 
 	sum<={signr,expr,mantr};
