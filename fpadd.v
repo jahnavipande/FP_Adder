@@ -30,10 +30,10 @@ always @(posedge clk)
 	if(start)
 	begin
 	done <=0;
-	ctr<=24;
+	ctr<=23;
 	signa <= a[31];
 	signb <= b[31];
-	signr<=1'b0;
+	signr<=0;
 	expa <= a[30:23];
 	expb <= b[30:23];
 	manta <= {1'b1, a[22:0]};
@@ -106,7 +106,7 @@ always @(posedge clk)
 		mantr<=-mantr;
 	end
 
-	if(mantr[25])
+	if(mantr[24])
 		begin
 			mantr <= mantr >> 1;
 			expr  <= expr + 1;
@@ -114,11 +114,11 @@ always @(posedge clk)
 	else
 	begin
 
-	if ((ctr > 0) && mantr[ctr]!=1) 
+	if ((ctr >= 0) && mantr[ctr]!=1) 
 	  		begin
 	  	    	mantr<=mantr<<1;
 	     		expr<=expr-1;
-	     		ctr<=ctr+1;
+	     		ctr<=ctr-1;
 	  		end
 	end
 	
