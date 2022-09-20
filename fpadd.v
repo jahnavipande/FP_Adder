@@ -36,21 +36,21 @@ always @(posedge clk)
 	begin
 		if(start)
 		    begin
-			current_state<=3'b000;
-			done <=0;
-			ctr<=24;
-			expr<=0;
-			sum<=0;
-			signa <= a[31];
-			signb <= b[31];
-			signr<=0;
-			mantr<=0;
-			expa <= a[30:23];
-			expb <= b[30:23];
-			manta <= {1'b1, a[22:0]};
-			mantb <= {1'b1, b[22:0]};  
+                current_state<=3'b000;
+                done <=0;
+                ctr<=24;
+                expr<=0;
+                sum<=0;
+                signa <= a[31];
+                signb <= b[31];
+                signr<=0;
+                mantr<=0;
+                expa <= a[30:23];
+                expb <= b[30:23];
+                manta <= {1'b1, a[22:0]};
+                mantb <= {1'b1, b[22:0]};  
 		    end
-		    else
+        else
 		    begin
 			    if(current_state=3'b000)
 				    begin
@@ -113,220 +113,267 @@ always @(posedge clk)
 			    if(current_state=3'b100)
 				    begin
 					   	if(expa==expb)
-			begin
-				expr<= expb;
-				if(manta>mantb)
-					begin
-						if(signb)
-							begin
-								mantr<= manta-mantb;
-								signr<=0;
-							end
-						if(signa)
-							begin
-								mantr<= manta-mantb;
-								signr<=1;
-							end
-						else
-							begin
-								mantr<= manta+mantb;
-								signr<=0;
-							end
+						begin
+							expr<= expb;
+							if(manta>mantb)
+								begin
+									if(signb)
+										begin
+											mantr<= manta-mantb;
+											signr<=0;
+                                            next_state<=3'b111
+										end
+									if(signa)
+										begin
+											mantr<= manta-mantb;
+											signr<=1;
+                                            next_state<=3'b111
+										end
+									else
+										begin
+											mantr<= manta+mantb;
+											signr<=0;
+                                            next_state<=3'b111
+										end
+								end
+							if(mantb>manta)
+								begin
+									if(signb)
+										begin
+											mantr<= mantb-manta;
+											signr<=1;
+                                            next_state<=3'b111
+										end
+									if(signa)
+										begin
+											mantr<= mantb-manta;
+											signr<=0;
+                                            next_state<=3'b111
+										end
+									else
+										begin
+											mantr<= manta+mantb;
+											signr<=0;
+                                            next_state<=3'b111
+										end
+                                end
+											
+							else
+								begin
+									if(signb)
+										begin
+											mantr<= 0;
+											signr<=0;
+                                            next_state<=3'b111
+										end
+									if(signa)
+										begin
+											mantr<= 0;
+											signr<=0;
+                                            next_state<=3'b111
+										end
+									else
+										begin
+											mantr<= manta+mantb;
+											signr<=0;
+                                            next_state<=3'b111
+										end
+								end
 
-					end
-				if(mantb>manta)
-					begin
-						if(signb)
-							begin
-								mantr<= mantb-manta;
-								signr<=1;
-							end
-						if(signa)
-							begin
-								mantr<= mantb-manta;
-								signr<=0;
-							end
-						else
-							begin
-								mantr<= manta+mantb;
-								signr<=0;
-							end
+						end	
 
-					end
-				else
-					begin
-						if(signb)
-							begin
-								mantr<= 0;
-								signr<=0;
-							end
-						if(signa)
-							begin
-								mantr<= 0;
-								signr<=0;
-							end
-						else
-							begin
-								mantr<= manta+mantb;
-								signr<=0;
-							end
-					end
+                        if(expa>expb)
+                        begin
+                            assign expdiff = expa-expb;
+                            mantb <= mantb>>expdiff;
+                            expr<= expa;
+                            if(manta>mantb)
+								begin
+									if(signb)
+										begin
+											mantr<= manta-mantb;
+											signr<=0;
+                                            next_state<=3'b111
+										end
+									if(signa)
+										begin
+											mantr<= manta-mantb;
+											signr<=1;
+                                            next_state<=3'b111
+										end
+									else
+										begin
+											mantr<= manta+mantb;
+											signr<=0;
+                                            next_state<=3'b111
+										end
+								end
+							if(mantb>manta)
+								begin
+									if(signb)
+										begin
+											mantr<= mantb-manta;
+											signr<=1;
+                                            next_state<=3'b111
+										end
+									if(signa)
+										begin
+											mantr<= mantb-manta;
+											signr<=0;
+                                            next_state<=3'b111
+										end
+									else
+										begin
+											mantr<= manta+mantb;
+											signr<=0;
+                                            next_state<=3'b111
+										end
+                                end
+											
+							else
+								begin
+									if(signb)
+										begin
+											mantr<= 0;
+											signr<=0;
+                                            next_state<=3'b111
+										end
+									if(signa)
+										begin
+											mantr<= 0;
+											signr<=0;
+                                            next_state<=3'b111
+										end
+									else
+										begin
+											mantr<= manta+mantb;
+											signr<=0;
+                                            next_state<=3'b111
+										end
+								end
+                        end	
 
-			end	
-			if(expa>expb)
-			begin
-				assign expdiff = expa-expb;
-				mantb <= mantb>>expdiff;
-				expr<= expa;
-				if(manta>mantb)
-					begin
-						if(signb)
-							begin
-								mantr<= manta-mantb;
-								signr<=0;
-							end
-						if(signa)
-							begin
-								mantr<= manta-mantb;
-								signr<=1;
-							end
-						else
-							begin
-								mantr<= manta+mantb;
-								signr<=0;
-							end
+                        if(expb>expa)
+                        begin
+                            assign expdiff = expb-expa;
+                            manta <= manta>>expdiff;
+                            expr<= expb;
+                            if(manta>mantb)
+								begin
+									if(signb)
+										begin
+											mantr<= manta-mantb;
+											signr<=0;
+                                            next_state<=3'b111
+										end
+									if(signa)
+										begin
+											mantr<= manta-mantb;
+											signr<=1;
+                                            next_state<=3'b111
+										end
+									else
+										begin
+											mantr<= manta+mantb;
+											signr<=0;
+                                            next_state<=3'b111
+										end
+								end
+							if(mantb>manta)
+								begin
+									if(signb)
+										begin
+											mantr<= mantb-manta;
+											signr<=1;
+                                            next_state<=3'b111
+										end
+									if(signa)
+										begin
+											mantr<= mantb-manta;
+											signr<=0;
+                                            next_state<=3'b111
+										end
+									else
+										begin
+											mantr<= manta+mantb;
+											signr<=0;
+                                            next_state<=3'b111
+										end
+                                end
+											
+							else
+								begin
+									if(signb)
+										begin
+											mantr<= 0;
+											signr<=0;
+                                            next_state<=3'b111
+										end
+									if(signa)
+										begin
+											mantr<= 0;
+											signr<=0;
+                                            next_state<=3'b111
+										end
+									else
+										begin
+											mantr<= manta+mantb;
+											signr<=0;
+                                            next_state<=3'b111
+										end
+								end
+                        end 
+                    end 
+             
+                    if(current_state==3'b111)   
+                        begin
+                            if(mantr[25])
+                                begin
+                                    mantr <= mantr >> 2;
+                                    expr  <= expr + 2;
+                                    next_state<=3'b110;
+                                end
 
-					end
-				if(mantb>manta)
-					begin
-						if(signb)
-							begin
-								mantr<= mantb-manta;
-								signr<=1;
-							end
-						if(signa)
-							begin
-								mantr<= mantb-manta;
-								signr<=0;
-							end
-						else
-							begin
-								mantr<= manta+mantb;
-								signr<=0;
-							end
+                            if(mantr[24])
+                                begin
+                                    mantr <= mantr >> 1;
+                                    expr  <= expr + 1;
+                                    next_state<=3'b110;
+                                end
 
-					end
-				else
-					begin
-						if(signb)
-							begin
-								mantr<= 0;
-								signr<=0;
-							end
-						if(signa)
-							begin
-								mantr<= 0;
-								signr<=0;
-							end
-						else
-							begin
-								mantr<= manta+mantb;
-								signr<=0;
-							end
-					end
-			end	
-			if(expb>expa)
-			begin
-				assign expdiff = expb-expa;
-				manta <= manta>>expdiff;
-				expr<= expb;
-				if(manta>mantb)
-					begin
-						if(signb)
-							begin
-								mantr<= manta-mantb;
-								signr<=0;
-							end
-						if(signa)
-							begin
-								mantr<= manta-mantb;
-								signr<=1;
-							end
-						else
-							begin
-								mantr<= manta+mantb;
-								signr<=0;
-							end
+                            else
+                                begin
+                                    next_state<=3'b110;
+                                end
+                        end
 
-					end
-				if(mantb>manta)
-					begin
-						if(signb)
-							begin
-								mantr<= mantb-manta;
-								signr<=1;
-							end
-						if(signa)
-							begin
-								mantr<= mantb-manta;
-								signr<=0;
-							end
-						else
-							begin
-								mantr<= manta+mantb;
-								signr<=0;
-							end
 
-					end
-				else
-					begin
-						if(signb)
-							begin
-								mantr<= 0;
-								signr<=0;
-							end
-						if(signa)
-							begin
-								mantr<= 0;
-								signr<=0;
-							end
-						else
-							begin
-								mantr<= manta+mantb;
-								signr<=0;
-							end
-					end
+                    if(current_state==3'b110)
+                        begin
+                            if (ctr > 0)
+                                begin
+                                    if(mantr[ctr-1]!=1)
+                                        begin
+                                            mantr<=mantr<<1;
+                                            expr<=expr-1;
+                                            ctr<=ctr-1;
+                                        end
+                                    else
+                                        begin
+                                            ctr<=0;
+                                            next_state<=3'b101;                                    
+                                        end	
+                                end
+                        end
+                        
+                    if(current_state==3'b101)
+                        begin
+                            sum<={signr,expr,mantr[22:0]};
+			                done<=1;
+                        end
+			
 			end
-				    end
 
-
-
-			if(mantr[24])
-				begin
-					mantr <= mantr >> 1;
-					expr  <= expr + 1;
-				end
-
-
-			if (ctr > 0)
-			    begin
-				    if(mantr[ctr-1]!=1)
-					begin
-					mantr<=mantr<<1;
-					expr<=expr-1;
-					ctr<=ctr-1;
-					end
-					else
-					begin
-						ctr<=0;
-					end	
-			      end
-
-
-			sum<={signr,expr,mantr[22:0]};
-			done<=1;
-			end
-
-			end
-		end
-	endmodule
+			
+	end
+endmodule
