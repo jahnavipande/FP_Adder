@@ -12,7 +12,7 @@ module fpadd (
 	reg [23:0] 	manta, mantb;
 	reg [25:0]	mantr;
 	reg [0:0] 	signa, signb, signr;
-	reg 		done;
+	reg 		done, round;
 	reg [31:0]	sum;
 	reg [4:0]	ctr;
 	reg [2:0]	current_state, next_state;
@@ -39,6 +39,7 @@ always @(posedge clk)
                 done <=0;
                 ctr<=24;
                 expr<=0;
+                round<=0;
                 sum<=0;
                 signa <= a[31];
                 signb <= b[31];
@@ -135,15 +136,21 @@ always @(posedge clk)
 							expr<= expb;
 							if(manta>mantb)
 								begin
-									if(signb)
+									if(signb && (signa!=1))
 										begin
 											mantr<= manta-mantb;
 											signr<=0;
                                             next_state<=3'b111;
 										end
-									if(signa)
+									if(signa && (signb!=1))
 										begin
 											mantr<= manta-mantb;
+											signr<=1;
+                                            next_state<=3'b111;
+										end
+                                    if(signa && signb)
+										begin
+											mantr<= manta+mantb;
 											signr<=1;
                                             next_state<=3'b111;
 										end
@@ -156,16 +163,22 @@ always @(posedge clk)
 								end
 							if(mantb>manta)
 								begin
-									if(signb)
+									if(signb && (signa!=1))
 										begin
 											mantr<= mantb-manta;
 											signr<=1;
                                             next_state<=3'b111;
 										end
-									if(signa)
+									if(signa && (signb!=1))
 										begin
 											mantr<= mantb-manta;
 											signr<=0;
+                                            next_state<=3'b111;
+										end
+                                    if(signa && signb)
+										begin
+											mantr<= manta+mantb;
+											signr<=1;
                                             next_state<=3'b111;
 										end
 									else
@@ -178,16 +191,22 @@ always @(posedge clk)
 											
 							else
 								begin
-									if(signb)
+									if(signb && (signa!=1))
 										begin
 											mantr<= 0;
 											signr<=0;
                                             next_state<=3'b111;
 										end
-									if(signa)
+									if(signa && (signb!=1))
 										begin
 											mantr<= 0;
 											signr<=0;
+                                            next_state<=3'b111;
+										end
+                                    if(signa && signb)
+										begin
+											mantr<= manta+mantb;
+											signr<=1;
                                             next_state<=3'b111;
 										end
 									else
@@ -204,17 +223,28 @@ always @(posedge clk)
                         begin
                             mantb <= mantb>>expdiffa;
                             expr<= expa;
+
+                            if(b[expdiffa-1]) begin
+                                mantb<=mantb+1;
+                                end  
+
                             if(manta>mantb)
 								begin
-									if(signb)
+									if(signb && (signa!=1))
 										begin
 											mantr<= manta-mantb;
 											signr<=0;
                                             next_state<=3'b111;
 										end
-									if(signa)
+									if(signa && (signb!=1))
 										begin
 											mantr<= manta-mantb;
+											signr<=1;
+                                            next_state<=3'b111;
+										end
+                                    if(signa && signb)
+										begin
+											mantr<= manta+mantb;
 											signr<=1;
                                             next_state<=3'b111;
 										end
@@ -227,16 +257,22 @@ always @(posedge clk)
 								end
 							if(mantb>manta)
 								begin
-									if(signb)
+									if(signb && (signa!=1))
 										begin
 											mantr<= mantb-manta;
 											signr<=1;
                                             next_state<=3'b111;
 										end
-									if(signa)
+									if(signa && (signb!=1))
 										begin
 											mantr<= mantb-manta;
 											signr<=0;
+                                            next_state<=3'b111;
+										end
+                                    if(signa && signb)
+										begin
+											mantr<= manta+mantb;
+											signr<=1;
                                             next_state<=3'b111;
 										end
 									else
@@ -249,16 +285,22 @@ always @(posedge clk)
 											
 							else
 								begin
-									if(signb)
+									if(signb && (signa!=1))
 										begin
 											mantr<= 0;
 											signr<=0;
                                             next_state<=3'b111;
 										end
-									if(signa)
+									if(signa && (signb!=1))
 										begin
 											mantr<= 0;
 											signr<=0;
+                                            next_state<=3'b111;
+										end
+                                    if(signa && signb)
+										begin
+											mantr<= manta+mantb;
+											signr<=1;
                                             next_state<=3'b111;
 										end
 									else
@@ -274,17 +316,27 @@ always @(posedge clk)
                         begin
                             manta <= manta>>expdiffb;
                             expr<= expb;
+                            if(a[expdiffb-1]) begin
+                                manta<=manta+1;
+                                end
+
                             if(manta>mantb)
 								begin
-									if(signb)
+									if(signb && (signa!=1))
 										begin
 											mantr<= manta-mantb;
 											signr<=0;
                                             next_state<=3'b111;
 										end
-									if(signa)
+									if(signa && (signb!=1))
 										begin
 											mantr<= manta-mantb;
+											signr<=1;
+                                            next_state<=3'b111;
+										end
+                                    if(signa && signb)
+										begin
+											mantr<= manta+mantb;
 											signr<=1;
                                             next_state<=3'b111;
 										end
@@ -297,16 +349,22 @@ always @(posedge clk)
 								end
 							if(mantb>manta)
 								begin
-									if(signb)
+									if(signb && (signa!=1))
 										begin
 											mantr<= mantb-manta;
 											signr<=1;
                                             next_state<=3'b111;
 										end
-									if(signa)
+									if(signa && (signb!=1))
 										begin
 											mantr<= mantb-manta;
 											signr<=0;
+                                            next_state<=3'b111;
+										end
+                                    if(signa && signb)
+										begin
+											mantr<= manta+mantb;
+											signr<=1;
                                             next_state<=3'b111;
 										end
 									else
@@ -319,16 +377,22 @@ always @(posedge clk)
 											
 							else
 								begin
-									if(signb)
+									if(signb && (signa!=1))
 										begin
 											mantr<= 0;
 											signr<=0;
                                             next_state<=3'b111;
 										end
-									if(signa)
+									if(signa && (signb!=1))
 										begin
 											mantr<= 0;
 											signr<=0;
+                                            next_state<=3'b111;
+										end
+                                    if(signa && signb)
+										begin
+											mantr<= manta+mantb;
+											signr<=1;
                                             next_state<=3'b111;
 										end
 									else
