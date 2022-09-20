@@ -58,9 +58,12 @@ Further, certain combinations form a special case and are reserved for the follo
 * e = 255
     * mantissa = all zeros: +/- inf
     * mantissa = non-zero: NaN (Not-a-Number)
-* e = 0, represents the case of denormal/subnormal numbers
+* e = 0
+    * mantissa = all zeros: +/- zero
+    * mantissa = non-zero: represents the case of denormal/subnormal numbers
 
-For this assignment, the case of denormal numbers need not be handled. However, the case of e = 255 is to be considered.
+
+For this assignment, the case of denormal numbers need not be handled. However, other cases are to be considered.
 
 ### Floating-Point Addition 
 The rough flow of addition for the case of floating-point numbers has been presented: 
@@ -122,6 +125,16 @@ So anyway, what happens is the following:
 4. The `fpadd_tb` command is run to try and satisfy the Verilog tests.  As things stand, it will report a failure since the existing template module does not have any code.
 
 So now it is up to you to fill in the required functionality in `fpadd.v`, and get the Verilog tests to pass.
+
+### Testing on FPGA
+
+The fpadd module is to be wrapped inside a block design, interfaced with the VIO blocks. Once the bitstream is generated for the block design, the '.bit' and '.ltx' files(which are located inside <PROJECT_NAME>/<PROJECT_NAME>.runs/impl_1) are to be stored inside the [*test*](./test/) directory. Script to run the "self-checking" VIO tests has been provided. 
+
+To run the tests, run the following commands :
+```
+cd test 
+python test.py 
+```
 
 ### Grading
 

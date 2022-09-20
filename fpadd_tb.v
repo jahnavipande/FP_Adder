@@ -7,7 +7,7 @@
 
 `timescale 1ns/1ns
 // The number of tests should ideally be obtained from the file
-`define NUMTEST 4
+`define NUMTEST 10
 `define TIMEOUT 100
 
 module fpadd_tb () ;
@@ -74,7 +74,7 @@ module fpadd_tb () ;
 			a = testinputs[i*3];
 			b = testinputs[i*3+1];
 			sumexp = testinputs[i*3+2];
-			// $display($time, " a = %X, b = %X, expected sum = %X", a, b, sumexp);
+			$display($time, " a = %X, b = %X, expected sum = %X", a, b, sumexp);
 			start_and_crank_dut;
 		end
 
