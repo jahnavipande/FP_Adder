@@ -269,12 +269,12 @@ always @(posedge clk)
 	if (ctr > 0)
 	    begin
 		    if(mantr[ctr-1]!=1)
-	  	begin
-	  	    mantr<=mantr<<1;
-	     	    expr<=expr-1;
-		    ctr<=ctr-1;
-		end
-		else
+	  		begin
+	  	    	mantr<=mantr<<1;
+	     	    	expr<=expr-1;
+		    	ctr<=ctr-1;
+			end
+			else
 			begin
 				ctr<=0;
 			end	
