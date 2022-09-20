@@ -57,7 +57,7 @@ always @(posedge clk)
                 expdiffb <= expb-expa;
                 expdiffa <= expa-expb;
 
-			    if(current_state==3'b010)
+			    /*if(current_state==3'b010)
 
                     expdiffb <= expb-expa;
                     expdiffa <= expa-expb;
@@ -92,13 +92,10 @@ always @(posedge clk)
 						   end
 
                                 //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
-				    end
+				    end*/
+
 			    if(current_state==3'b000)
 				    begin
-
-                        expdiffb <= expb-expa;
-                        expdiffa <= expa-expb;
-
 					    if(expa==8'b11111111)
 						begin
 							mantr<=manta;
@@ -119,6 +116,7 @@ always @(posedge clk)
 							expr<=expa;
 							signr<=signa;
 							next_state<=3'b101;
+                             $display("Damnn Correct");
 						end
                         else if((expa == 0) && (manta == 0))					//00
 						begin
@@ -137,23 +135,23 @@ always @(posedge clk)
 
 				    end
 			    
-			    if(current_state==3'b001)
-				    begin
-					     if(expb==8'b11111111)
-						begin
-							mantr<=mantb;
-							expr<=expb;
-							signr<=signb;
-							next_state<=3'b101;
-						end
-					    else
-						   begin
-							   next_state<=3'b010;
-						   end
+			    //if(current_state==3'b001)
+				    //begin
+					     //if(expb==8'b11111111)
+						//begin
+						//	mantr<=mantb;
+						//	expr<=expb;
+						//	signr<=signb;
+						//	next_state<=3'b101;
+						//end
+					    //else
+						  // begin
+							//   next_state<=3'b010;
+						   //end
 
                             //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
 
-				    end
+				    //end
 			    
 			    if(current_state==3'b100)
 				    begin
@@ -250,9 +248,9 @@ always @(posedge clk)
                             mantb <= mantb>>expdiffa;
                             expr<= expa;
 
-                            //if(b[expdiffa-1]) begin
-                                //mantb<=mantb+1;
-                                //end  
+                            if(b[expdiffa-1]) begin
+                                mantb<=mantb+1;
+                                end  
 
                             if(manta>mantb)
 								begin
@@ -342,9 +340,9 @@ always @(posedge clk)
                         begin
                             manta <= manta>>expdiffb;
                             expr<= expb;
-                            //if(a[expdiffb-1]) begin
-                                //manta<=manta+1;
-                                //end
+                            if(a[expdiffb-1]) begin
+                                manta<=manta+1;
+                                end
 
                             if(manta>mantb)
 								begin
