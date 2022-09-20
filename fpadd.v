@@ -8,13 +8,12 @@ module fpadd (
     input [31:0] a, b;
     output [31:0] sum;
     output done;
-	reg [7:0] 	expa, expb, expr;
+	reg [7:0] 	expa, expb, expr, expdiffa, expdiffb;
 	reg [23:0] 	manta, mantb;
 	reg [25:0]	mantr;
 	reg [0:0] 	signa, signb, signr;
 	reg 		done;
 	reg [31:0]	sum;
-	wire	expdiff;
 	reg [4:0]	ctr;
 	reg [2:0]	current_state, next_state;
 
@@ -48,11 +47,19 @@ always @(posedge clk)
                 expa <= a[30:23];
                 expb <= b[30:23];
                 manta <= {1'b1, a[22:0]};
-                mantb <= {1'b1, b[22:0]};  
+                mantb <= {1'b1, b[22:0]};
+
 		    end
         else
 		    begin
+
+                expdiffb <= expb-expa;
+                expdiffa <= expa-expb;
+
 			    if(current_state==3'b000)
+
+                    expdiffb <= expb-expa;
+                    expdiffa <= expa-expb;
 				    begin
 					   if((expa == 0) && (manta == 0))					//00
 						begin
@@ -184,8 +191,7 @@ always @(posedge clk)
 
                         if(expa>expb)
                         begin
-                            assign expdiff = expa-expb;
-                            mantb <= mantb>>expdiff;
+                            mantb <= mantb>>expdiffa;
                             expr<= expa;
                             if(manta>mantb)
 								begin
@@ -255,8 +261,7 @@ always @(posedge clk)
 
                         if(expb>expa)
                         begin
-                            assign expdiff = expb-expa;
-                            manta <= manta>>expdiff;
+                            manta <= manta>>expdiffb;
                             expr<= expb;
                             if(manta>mantb)
 								begin
