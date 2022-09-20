@@ -64,7 +64,7 @@ always @(posedge clk)
 				    begin
 					   if((expa == 0) && (manta == 0))					//00
 						begin
-							mantr <=mantb;
+							mantr <=mantb[22:0];
 							expr<=expb;
 							signr<=signb;
 							next_state<=3'b101;
@@ -81,7 +81,7 @@ always @(posedge clk)
 				    begin
 					    if((expb == 0) && (mantb == 0))
 						begin
-							mantr<=manta;
+							mantr<=manta[22:0];
 							expr<=expa;
 							signr<=signa;
 							next_state<=3'b101;
@@ -97,7 +97,7 @@ always @(posedge clk)
 				    begin
 					    if(expa==8'b11111111)
 						begin
-							mantr<=manta;
+							mantr<=manta[22:0];
 							expr<=expa;
 							signr<=signa;
 							next_state<=3'b101;
@@ -115,7 +115,7 @@ always @(posedge clk)
 				    begin
 					     if(expb==8'b11111111)
 						begin
-							mantr<=mantb;
+							mantr<=mantb[22:0];
 							expr<=expb;
 							signr<=signb;
 							next_state<=3'b101;
