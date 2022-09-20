@@ -80,7 +80,7 @@ always @(posedge clk)
 				if(signb)
 					begin
 						mantr<= manta-mantb;
-						signr<=0
+						signr<=0;
 					end
 				if(signa)
 					begin
@@ -99,7 +99,7 @@ always @(posedge clk)
 				if(signb)
 					begin
 						mantr<= manta-mantb;
-						signr<=1
+						signr<=1;
 					end
 				if(signa)
 					begin
@@ -118,7 +118,7 @@ always @(posedge clk)
 				if(signb)
 					begin
 						mantr<= 0;
-						signr<=0
+						signr<=0;
 					end
 				if(signa)
 					begin
@@ -143,7 +143,7 @@ always @(posedge clk)
 				if(signb)
 					begin
 						mantr<= manta-mantb;
-						signr<=0
+						signr<=0;
 					end
 				if(signa)
 					begin
@@ -162,7 +162,7 @@ always @(posedge clk)
 				if(signb)
 					begin
 						mantr<= manta-mantb;
-						signr<=1
+						signr<=1;
 					end
 				if(signa)
 					begin
@@ -181,7 +181,7 @@ always @(posedge clk)
 				if(signb)
 					begin
 						mantr<= 0;
-						signr<=0
+						signr<=0;
 					end
 				if(signa)
 					begin
@@ -205,7 +205,7 @@ always @(posedge clk)
 				if(signb)
 					begin
 						mantr<= manta-mantb;
-						signr<=0
+						signr<=0;
 					end
 				if(signa)
 					begin
@@ -224,7 +224,7 @@ always @(posedge clk)
 				if(signb)
 					begin
 						mantr<= manta-mantb;
-						signr<=1
+						signr<=1;
 					end
 				if(signa)
 					begin
@@ -243,7 +243,7 @@ always @(posedge clk)
 				if(signb)
 					begin
 						mantr<= 0;
-						signr<=0
+						signr<=0;
 					end
 				if(signa)
 					begin
