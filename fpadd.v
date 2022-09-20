@@ -224,9 +224,9 @@ always @(posedge clk)
                             mantb <= mantb>>expdiffa;
                             expr<= expa;
 
-                            if(b[expdiffa-1]) begin
-                                mantb<=mantb+1;
-                                end  
+                            //if(b[expdiffa-1]) begin
+                                //mantb<=mantb+1;
+                                //end  
 
                             if(manta>mantb)
 								begin
@@ -316,9 +316,9 @@ always @(posedge clk)
                         begin
                             manta <= manta>>expdiffb;
                             expr<= expb;
-                            if(a[expdiffb-1]) begin
-                                manta<=manta+1;
-                                end
+                            //if(a[expdiffb-1]) begin
+                                //manta<=manta+1;
+                                //end
 
                             if(manta>mantb)
 								begin
