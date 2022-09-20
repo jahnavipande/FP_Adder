@@ -44,7 +44,7 @@ always @(posedge clk)
                 signa <= a[31];
                 signb <= b[31];
                 signr<=0;
-                mantr<=0;
+                mantr<=26'b0;
                 expa <= a[30:23];
                 expb <= b[30:23];
                 manta <= {1'b1, a[22:0]};
@@ -52,11 +52,11 @@ always @(posedge clk)
 		    end
         else
 		    begin
-			    if(current_state=3'b000)
+			    if(current_state==3'b000)
 				    begin
 					   if((expa == 0) && (manta == 0))					//00
 						begin
-							mantr<=mantb;
+							mantr <=mantb;
 							expr<=expb;
 							signr<=signb;
 							next_state<=3'b111;
@@ -66,7 +66,7 @@ always @(posedge clk)
 							   next_state<=3'b001;
 						   end
 				    end
-			    if(current_state=3'b001)
+			    if(current_state==3'b001)
 				    begin
 					    if((expb == 0) && (mantb == 0))
 						begin
@@ -80,7 +80,7 @@ always @(posedge clk)
 							   next_state<=3'b010;
 						   end
 				    end
-			    if(current_state=3'b010)
+			    if(current_state==3'b010)
 				    begin
 					    if(expa==8'b11111111)
 						begin
@@ -95,7 +95,7 @@ always @(posedge clk)
 						   end
 				    end
 			    
-			    if(current_state=3'b011)
+			    if(current_state==3'b011)
 				    begin
 					     if(expb==8'b11111111)
 						begin
@@ -110,7 +110,7 @@ always @(posedge clk)
 						   end
 				    end
 			    
-			    if(current_state=3'b100)
+			    if(current_state==3'b100)
 				    begin
 					   	if(expa==expb)
 						begin
@@ -121,19 +121,19 @@ always @(posedge clk)
 										begin
 											mantr<= manta-mantb;
 											signr<=0;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 									if(signa)
 										begin
 											mantr<= manta-mantb;
 											signr<=1;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 									else
 										begin
 											mantr<= manta+mantb;
 											signr<=0;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 								end
 							if(mantb>manta)
@@ -142,19 +142,19 @@ always @(posedge clk)
 										begin
 											mantr<= mantb-manta;
 											signr<=1;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 									if(signa)
 										begin
 											mantr<= mantb-manta;
 											signr<=0;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 									else
 										begin
 											mantr<= manta+mantb;
 											signr<=0;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
                                 end
 											
@@ -164,19 +164,19 @@ always @(posedge clk)
 										begin
 											mantr<= 0;
 											signr<=0;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 									if(signa)
 										begin
 											mantr<= 0;
 											signr<=0;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 									else
 										begin
 											mantr<= manta+mantb;
 											signr<=0;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 								end
 
@@ -193,19 +193,19 @@ always @(posedge clk)
 										begin
 											mantr<= manta-mantb;
 											signr<=0;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 									if(signa)
 										begin
 											mantr<= manta-mantb;
 											signr<=1;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 									else
 										begin
 											mantr<= manta+mantb;
 											signr<=0;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 								end
 							if(mantb>manta)
@@ -214,19 +214,19 @@ always @(posedge clk)
 										begin
 											mantr<= mantb-manta;
 											signr<=1;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 									if(signa)
 										begin
 											mantr<= mantb-manta;
 											signr<=0;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 									else
 										begin
 											mantr<= manta+mantb;
 											signr<=0;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
                                 end
 											
@@ -236,19 +236,19 @@ always @(posedge clk)
 										begin
 											mantr<= 0;
 											signr<=0;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 									if(signa)
 										begin
 											mantr<= 0;
 											signr<=0;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 									else
 										begin
 											mantr<= manta+mantb;
 											signr<=0;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 								end
                         end	
@@ -264,19 +264,19 @@ always @(posedge clk)
 										begin
 											mantr<= manta-mantb;
 											signr<=0;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 									if(signa)
 										begin
 											mantr<= manta-mantb;
 											signr<=1;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 									else
 										begin
 											mantr<= manta+mantb;
 											signr<=0;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 								end
 							if(mantb>manta)
@@ -285,19 +285,19 @@ always @(posedge clk)
 										begin
 											mantr<= mantb-manta;
 											signr<=1;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 									if(signa)
 										begin
 											mantr<= mantb-manta;
 											signr<=0;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 									else
 										begin
 											mantr<= manta+mantb;
 											signr<=0;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
                                 end
 											
@@ -307,19 +307,19 @@ always @(posedge clk)
 										begin
 											mantr<= 0;
 											signr<=0;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 									if(signa)
 										begin
 											mantr<= 0;
 											signr<=0;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 									else
 										begin
 											mantr<= manta+mantb;
 											signr<=0;
-                                            next_state<=3'b111
+                                            next_state<=3'b111;
 										end
 								end
                         end 
