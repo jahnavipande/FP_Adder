@@ -75,36 +75,187 @@ always @(posedge clk)
 	if(expa==expb)
 	begin
 		expr<= expb;
+		if(manta>mantb)
+			begin
+				if(signb)
+					begin
+						mantr<= manta-mantb;
+						signr<=0
+					end
+				if(signa)
+					begin
+						mantr<= manta-mantb;
+						signr<=1;
+					end
+				else
+					begin
+						mantr<= manta+mantb;
+						signr<=0;
+					end
+				
+			end
+		if(mantb>manta)
+			begin
+				if(signb)
+					begin
+						mantr<= manta-mantb;
+						signr<=1
+					end
+				if(signa)
+					begin
+						mantr<= manta-mantb;
+						signr<=0;
+					end
+				else
+					begin
+						mantr<= manta+mantb;
+						signr<=0;
+					end
+				
+			end
+		else
+			begin
+				if(signb)
+					begin
+						mantr<= 0;
+						signr<=0
+					end
+				if(signa)
+					begin
+						mantr<= 0;
+						signr<=0;
+					end
+				else
+					begin
+						mantr<= manta+mantb;
+						signr<=0;
+					end
+			end
+					
 	end	
 	if(expa>expb)
 	begin
-		expdiff <= expa-expb;
-		mantb <= mantb>>expdiff;
-		expr<= expa;
+		expdiff = expa-expb;
+		mantb = mantb>>expdiff;
+		expr= expa;
+		if(manta>mantb)
+			begin
+				if(signb)
+					begin
+						mantr<= manta-mantb;
+						signr<=0
+					end
+				if(signa)
+					begin
+						mantr<= manta-mantb;
+						signr<=1;
+					end
+				else
+					begin
+						mantr<= manta+mantb;
+						signr<=0;
+					end
+				
+			end
+		if(mantb>manta)
+			begin
+				if(signb)
+					begin
+						mantr<= manta-mantb;
+						signr<=1
+					end
+				if(signa)
+					begin
+						mantr<= manta-mantb;
+						signr<=0;
+					end
+				else
+					begin
+						mantr<= manta+mantb;
+						signr<=0;
+					end
+				
+			end
+		else
+			begin
+				if(signb)
+					begin
+						mantr<= 0;
+						signr<=0
+					end
+				if(signa)
+					begin
+						mantr<= 0;
+						signr<=0;
+					end
+				else
+					begin
+						mantr<= manta+mantb;
+						signr<=0;
+					end
+			end
 	end	
 	if(expb>expa)
 	begin
-		expdiff <= expb-expa;
-		manta <= manta>>expdiff;
-		expr<= expb;
-	end
-		
-	if(signa)
-	begin
-	manta<=-manta;	
-	end
-
-	if(signb)
-	begin
-	mantb<=-mantb;	
-	end
-	
-	mantr <= manta+mantb;
-
-	if(mantr<0)
-	begin
-		signr<=1;
-		mantr<=-mantr;
+		expdiff = expb-expa;
+		manta = manta>>expdiff;
+		expr= expb;
+		if(manta>mantb)
+			begin
+				if(signb)
+					begin
+						mantr<= manta-mantb;
+						signr<=0
+					end
+				if(signa)
+					begin
+						mantr<= manta-mantb;
+						signr<=1;
+					end
+				else
+					begin
+						mantr<= manta+mantb;
+						signr<=0;
+					end
+				
+			end
+		if(mantb>manta)
+			begin
+				if(signb)
+					begin
+						mantr<= manta-mantb;
+						signr<=1
+					end
+				if(signa)
+					begin
+						mantr<= manta-mantb;
+						signr<=0;
+					end
+				else
+					begin
+						mantr<= manta+mantb;
+						signr<=0;
+					end
+				
+			end
+		else
+			begin
+				if(signb)
+					begin
+						mantr<= 0;
+						signr<=0
+					end
+				if(signa)
+					begin
+						mantr<= 0;
+						signr<=0;
+					end
+				else
+					begin
+						mantr<= manta+mantb;
+						signr<=0;
+					end
+			end
 	end
 
 	if(mantr[24])
