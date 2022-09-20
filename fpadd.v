@@ -67,7 +67,7 @@ always @(posedge clk)
 							mantr <=mantb;
 							expr<=expb;
 							signr<=signb;
-							next_state<=3'b111;
+							next_state<=3'b101;
 
 						end
 					   else
@@ -84,7 +84,7 @@ always @(posedge clk)
 							mantr<=manta;
 							expr<=expa;
 							signr<=signa;
-							next_state<=3'b111;
+							next_state<=3'b101;
 						end
 					    else
 						   begin
@@ -100,7 +100,7 @@ always @(posedge clk)
 							mantr<=manta;
 							expr<=expa;
 							signr<=signa;
-							next_state<=3'b111;
+							next_state<=3'b101;
 						end
 					    else
 						   begin
@@ -118,7 +118,7 @@ always @(posedge clk)
 							mantr<=mantb;
 							expr<=expb;
 							signr<=signb;
-							next_state<=3'b111;
+							next_state<=3'b101;
 						end
 					    else
 						   begin
