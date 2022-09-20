@@ -95,6 +95,10 @@ always @(posedge clk)
 				    end
 			    if(current_state==3'b000)
 				    begin
+
+                        expdiffb <= expb-expa;
+                        expdiffa <= expa-expb;
+
 					    if(expa==8'b11111111)
 						begin
 							mantr<=manta;
@@ -102,9 +106,31 @@ always @(posedge clk)
 							signr<=signa;
 							next_state<=3'b101;
 						end
+                        else if(expb==8'b11111111)
+						begin
+							mantr<=mantb;
+							expr<=expb;
+							signr<=signb;
+							next_state<=3'b101;
+						end
+                        else if((expb == 0) && (mantb == 0))
+						begin
+							mantr<=manta;
+							expr<=expa;
+							signr<=signa;
+							next_state<=3'b101;
+						end
+                        else if((expa == 0) && (manta == 0))					//00
+						begin
+							mantr <=mantb;
+							expr<=expb;
+							signr<=signb;
+							next_state<=3'b101;
+
+						end
 					    else
 						   begin
-							   next_state<=3'b001;
+							   next_state<=3'b100;
 						   end
 
                                 //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
