@@ -36,6 +36,7 @@ always @(posedge clk)
 	signa <= a[31];
 	signb <= b[31];
 	signr<=0;
+	mantr<=0;
 	expa <= a[30:23];
 	expb <= b[30:23];
 	manta <= {1'b1, a[22:0]};
