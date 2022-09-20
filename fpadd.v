@@ -54,15 +54,74 @@ always @(posedge clk)
         else
 		    begin
 
+                /*expdiffb <= expb-expa;
+                expdiffa <= expa-expb;*/
+
+			    if(current_state==3'b000)
+
                 expdiffb <= expb-expa;
                 expdiffa <= expa-expb;
-
-			    /*if(current_state==3'b010)
-
-                    expdiffb <= expb-expa;
-                    expdiffa <= expa-expb;
 				    begin
-					   if((expa == 0) && (manta == 0))					//00
+					    if(expa==8'b11111111)
+						begin
+							mantr<=manta;
+							expr<=expa;
+							signr<=signa;
+							next_state<=3'b101;
+						end
+                        /*else if(expb==8'b11111111)
+						begin
+							mantr<=mantb;
+							expr<=expb;
+							signr<=signb;
+							next_state<=3'b101;
+						end
+                        else if((expb == 0) && (mantb == 0))
+						begin
+							mantr<=manta;
+							expr<=expa;
+							signr<=signa;
+							next_state<=3'b101;
+                             $display("Damnn Correct");
+						end
+                        else if((expa == 0) && (manta == 0))					//00
+						begin
+							mantr <=mantb;
+							expr<=expb;
+							signr<=signb;
+							next_state<=3'b101;
+
+						end*/
+					    else
+						   begin
+							   next_state<=3'b001;
+						   end
+
+                                //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
+
+				    end
+			    
+			    if(current_state==3'b001)
+				    begin
+					     if(expb==8'b11111111)
+						begin
+							mantr<=mantb;
+							expr<=expb;
+							signr<=signb;
+							next_state<=3'b101;
+						end
+					    else
+						   begin
+							   next_state<=3'b010;
+						   end
+
+                            //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
+
+				    end
+                if(current_state==3'b010)
+
+				    begin
+					   if((expa == 0) && (manta == 0))					
 						begin
 							mantr <=mantb;
 							expr<=expb;
@@ -92,66 +151,7 @@ always @(posedge clk)
 						   end
 
                                 //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
-				    end*/
-
-			    if(current_state==3'b000)
-				    begin
-					    if(expa==8'b11111111)
-						begin
-							mantr<=manta;
-							expr<=expa;
-							signr<=signa;
-							next_state<=3'b101;
-						end
-                        else if(expb==8'b11111111)
-						begin
-							mantr<=mantb;
-							expr<=expb;
-							signr<=signb;
-							next_state<=3'b101;
-						end
-                        else if((expb == 0) && (mantb == 0))
-						begin
-							mantr<=manta;
-							expr<=expa;
-							signr<=signa;
-							next_state<=3'b101;
-                             $display("Damnn Correct");
-						end
-                        else if((expa == 0) && (manta == 0))					//00
-						begin
-							mantr <=mantb;
-							expr<=expb;
-							signr<=signb;
-							next_state<=3'b101;
-
-						end
-					    else
-						   begin
-							   next_state<=3'b100;
-						   end
-
-                                //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
-
 				    end
-			    
-			    //if(current_state==3'b001)
-				    //begin
-					     //if(expb==8'b11111111)
-						//begin
-						//	mantr<=mantb;
-						//	expr<=expb;
-						//	signr<=signb;
-						//	next_state<=3'b101;
-						//end
-					    //else
-						  // begin
-							//   next_state<=3'b010;
-						   //end
-
-                            //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
-
-				    //end
 			    
 			    if(current_state==3'b100)
 				    begin
