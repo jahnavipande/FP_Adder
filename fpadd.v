@@ -57,14 +57,14 @@ always @(posedge clk)
                 expdiffb <= expb-expa;
                 expdiffa <= expa-expb;
 
-			    if(current_state==3'b000)
+			    if(current_state==3'b010)
 
                     expdiffb <= expb-expa;
                     expdiffa <= expa-expb;
 				    begin
 					   if((expa == 0) && (manta == 0))					//00
 						begin
-							mantr <=mantb[22:0];
+							mantr <=mantb;
 							expr<=expb;
 							signr<=signb;
 							next_state<=3'b101;
@@ -72,57 +72,57 @@ always @(posedge clk)
 						end
 					   else
 						   begin
-							   next_state<=3'b001;
+							   next_state<=3'b011;
 						   end
                                 //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
 
 				    end
-			    if(current_state==3'b001)
+			    if(current_state==3'b011)
 				    begin
 					    if((expb == 0) && (mantb == 0))
 						begin
-							mantr<=manta[22:0];
+							mantr<=manta;
 							expr<=expa;
 							signr<=signa;
 							next_state<=3'b101;
 						end
 					    else
 						   begin
-							   next_state<=3'b010;
+							   next_state<=3'b100;
 						   end
 
                                 //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
 				    end
-			    if(current_state==3'b010)
+			    if(current_state==3'b000)
 				    begin
 					    if(expa==8'b11111111)
 						begin
-							mantr<=manta[22:0];
+							mantr<=manta;
 							expr<=expa;
 							signr<=signa;
 							next_state<=3'b101;
 						end
 					    else
 						   begin
-							   next_state<=3'b011;
+							   next_state<=3'b001;
 						   end
 
                                 //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
 
 				    end
 			    
-			    if(current_state==3'b011)
+			    if(current_state==3'b001)
 				    begin
 					     if(expb==8'b11111111)
 						begin
-							mantr<=mantb[22:0];
+							mantr<=mantb;
 							expr<=expb;
 							signr<=signb;
 							next_state<=3'b101;
 						end
 					    else
 						   begin
-							   next_state<=3'b100;
+							   next_state<=3'b010;
 						   end
 
                             //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
@@ -136,13 +136,13 @@ always @(posedge clk)
 							expr<= expb;
 							if(manta>mantb)
 								begin
-									if(signb && (signa!=1))
+									if(signb && (~signa))
 										begin
 											mantr<= manta-mantb;
 											signr<=0;
                                             next_state<=3'b111;
 										end
-									if(signa && (signb!=1))
+									if(signa && (~signb))
 										begin
 											mantr<= manta-mantb;
 											signr<=1;
@@ -163,13 +163,13 @@ always @(posedge clk)
 								end
 							if(mantb>manta)
 								begin
-									if(signb && (signa!=1))
+									if(signb && (~signa))
 										begin
 											mantr<= mantb-manta;
 											signr<=1;
                                             next_state<=3'b111;
 										end
-									if(signa && (signb!=1))
+									if(signa && (~signb))
 										begin
 											mantr<= mantb-manta;
 											signr<=0;
@@ -191,13 +191,13 @@ always @(posedge clk)
 											
 							else
 								begin
-									if(signb && (signa!=1))
+									if(signb && (~signa))
 										begin
 											mantr<= 0;
 											signr<=0;
                                             next_state<=3'b111;
 										end
-									if(signa && (signb!=1))
+									if(signa && (~signb))
 										begin
 											mantr<= 0;
 											signr<=0;
@@ -230,13 +230,13 @@ always @(posedge clk)
 
                             if(manta>mantb)
 								begin
-									if(signb && (signa!=1))
+									if(signb && (~signa))
 										begin
 											mantr<= manta-mantb;
 											signr<=0;
                                             next_state<=3'b111;
 										end
-									if(signa && (signb!=1))
+									if(signa && (~signb))
 										begin
 											mantr<= manta-mantb;
 											signr<=1;
@@ -257,13 +257,13 @@ always @(posedge clk)
 								end
 							if(mantb>manta)
 								begin
-									if(signb && (signa!=1))
+									if(signb && (~signa))
 										begin
 											mantr<= mantb-manta;
 											signr<=1;
                                             next_state<=3'b111;
 										end
-									if(signa && (signb!=1))
+									if(signa && (~signb))
 										begin
 											mantr<= mantb-manta;
 											signr<=0;
@@ -285,13 +285,13 @@ always @(posedge clk)
 											
 							else
 								begin
-									if(signb && (signa!=1))
+									if(signb && (~signa))
 										begin
 											mantr<= 0;
 											signr<=0;
                                             next_state<=3'b111;
 										end
-									if(signa && (signb!=1))
+									if(signa && (~signb))
 										begin
 											mantr<= 0;
 											signr<=0;
@@ -322,13 +322,13 @@ always @(posedge clk)
 
                             if(manta>mantb)
 								begin
-									if(signb && (signa!=1))
+									if(signb && (~signa))
 										begin
 											mantr<= manta-mantb;
 											signr<=0;
                                             next_state<=3'b111;
 										end
-									if(signa && (signb!=1))
+									if(signa && (~signb))
 										begin
 											mantr<= manta-mantb;
 											signr<=1;
@@ -349,13 +349,13 @@ always @(posedge clk)
 								end
 							if(mantb>manta)
 								begin
-									if(signb && (signa!=1))
+									if(signb && (~signa))
 										begin
 											mantr<= mantb-manta;
 											signr<=1;
                                             next_state<=3'b111;
 										end
-									if(signa && (signb!=1))
+									if(signa && (~signb))
 										begin
 											mantr<= mantb-manta;
 											signr<=0;
@@ -377,13 +377,13 @@ always @(posedge clk)
 											
 							else
 								begin
-									if(signb && (signa!=1))
+									if(signb && (~signa))
 										begin
 											mantr<= 0;
 											signr<=0;
                                             next_state<=3'b111;
 										end
-									if(signa && (signb!=1))
+									if(signa && (~signb))
 										begin
 											mantr<= 0;
 											signr<=0;
