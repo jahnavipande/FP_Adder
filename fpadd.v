@@ -74,7 +74,9 @@ always @(posedge clk)
 							   next_state<=3'b001;
 						   end
                            initial
+                            begin
                                 $display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
+                            end
 				    end
 			    if(current_state==3'b001)
 				    begin
@@ -90,7 +92,9 @@ always @(posedge clk)
 							   next_state<=3'b010;
 						   end
                            initial
+                            begin
                                 $display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
+                            end
 				    end
 			    if(current_state==3'b010)
 				    begin
@@ -106,7 +110,9 @@ always @(posedge clk)
 							   next_state<=3'b011;
 						   end
                            initial
+                            begin
                                 $display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
+                            end
 				    end
 			    
 			    if(current_state==3'b011)
@@ -123,7 +129,9 @@ always @(posedge clk)
 							   next_state<=3'b100;
 						   end
                            initial
-                                $display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
+                                begin
+                                    $display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
+                                end
 				    end
 			    
 			    if(current_state==3'b100)
@@ -338,7 +346,9 @@ always @(posedge clk)
 								end
                         end
                         initial
+                            begin
                                 $display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr); 
+                            end
                     end 
              
                     if(current_state==3'b111)   
@@ -362,7 +372,9 @@ always @(posedge clk)
                                     next_state<=3'b110;
                                 end
                                 initial
-                                $display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
+                                begin
+                                    $display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
+                                end
                         end
 
 
@@ -383,7 +395,9 @@ always @(posedge clk)
                                         end	
                                 end
                                 initial
-                                $display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
+                                    begin
+                                        $display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
+                                    end
                         end
                         
                     if(current_state==3'b101)
@@ -391,7 +405,9 @@ always @(posedge clk)
                             sum<={signr,expr,mantr[22:0]};
 			                done<=1;
                             initial
-                                $display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
+                                begin
+                                    $display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
+                                end
                         end
 			
 			end
