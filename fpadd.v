@@ -10,281 +10,323 @@ module fpadd (
     output done;
 	reg [7:0] 	expa, expb, expr;
 	reg [23:0] 	manta, mantb;
-	reg [24:0]	mantr;
+	reg [25:0]	mantr;
 	reg [0:0] 	signa, signb, signr;
 	reg 		done;
 	reg [31:0]	sum;
-	reg [7:0]	expdiff;
+	wire	expdiff;
 	reg [4:0]	ctr;
+	reg [2:0]	current_state, next_state;
 
 always @(posedge clk)
-
-	if(reset)
-	begin
-	sum<=0;
-	end
-
-	else
 	begin
 
-	if(start)
-	begin
-	done <=0;
-	ctr<=24;
-	expr<=0;
-	sum<=0;
-	signa <= a[31];
-	signb <= b[31];
-	signr<=0;
-	mantr<=0;
-	expa <= a[30:23];
-	expb <= b[30:23];
-	manta <= {1'b1, a[22:0]};
-	mantb <= {1'b1, b[22:0]};
-    	end
-    else
-    begin
-	if((expa == 0) && (manta == 0))
-	begin
-		mantr<=mantb;
-		expr<=expb;
-		signr<=signb;
-	end
-
-	if((expb == 0) && (mantb == 0))
-	begin
-		mantr<=manta;
-		expr<=expa;
-		signr<=signa;
-	end
-
-	if(expa==8'b11111111)
-	begin
-		mantr<=manta;
-		expr<=expa;
-		signr<=signa;
-	end
-
-	if(expb==8'b11111111)
-	begin
-		mantr<=mantb;
-		expr<=expb;
-		signr<=signb;
-	end
-	else
-	begin
-	if(expa==expb)
-	begin
-		expr<= expb;
-		if(manta>mantb)
-			begin
-				if(signb)
-					begin
-						mantr<= manta-mantb;
-						signr<=0;
-					end
-				if(signa)
-					begin
-						mantr<= manta-mantb;
-						signr<=1;
-					end
-				else
-					begin
-						mantr<= manta+mantb;
-						signr<=0;
-					end
-				
-			end
-		if(mantb>manta)
-			begin
-				if(signb)
-					begin
-						mantr<= manta-mantb;
-						signr<=1;
-					end
-				if(signa)
-					begin
-						mantr<= manta-mantb;
-						signr<=0;
-					end
-				else
-					begin
-						mantr<= manta+mantb;
-						signr<=0;
-					end
-				
-			end
-		else
-			begin
-				if(signb)
-					begin
-						mantr<= 0;
-						signr<=0;
-					end
-				if(signa)
-					begin
-						mantr<= 0;
-						signr<=0;
-					end
-				else
-					begin
-						mantr<= manta+mantb;
-						signr<=0;
-					end
-			end
-					
-	end	
-	if(expa>expb)
-	begin
-		expdiff = expa-expb;
-		mantb = mantb>>expdiff;
-		expr= expa;
-		if(manta>mantb)
-			begin
-				if(signb)
-					begin
-						mantr<= manta-mantb;
-						signr<=0;
-					end
-				if(signa)
-					begin
-						mantr<= manta-mantb;
-						signr<=1;
-					end
-				else
-					begin
-						mantr<= manta+mantb;
-						signr<=0;
-					end
-				
-			end
-		if(mantb>manta)
-			begin
-				if(signb)
-					begin
-						mantr<= manta-mantb;
-						signr<=1;
-					end
-				if(signa)
-					begin
-						mantr<= manta-mantb;
-						signr<=0;
-					end
-				else
-					begin
-						mantr<= manta+mantb;
-						signr<=0;
-					end
-				
-			end
-		else
-			begin
-				if(signb)
-					begin
-						mantr<= 0;
-						signr<=0;
-					end
-				if(signa)
-					begin
-						mantr<= 0;
-						signr<=0;
-					end
-				else
-					begin
-						mantr<= manta+mantb;
-						signr<=0;
-					end
-			end
-	end	
-	if(expb>expa)
-	begin
-		expdiff = expb-expa;
-		manta = manta>>expdiff;
-		expr= expb;
-		if(manta>mantb)
-			begin
-				if(signb)
-					begin
-						mantr<= manta-mantb;
-						signr<=0;
-					end
-				if(signa)
-					begin
-						mantr<= manta-mantb;
-						signr<=1;
-					end
-				else
-					begin
-						mantr<= manta+mantb;
-						signr<=0;
-					end
-				
-			end
-		if(mantb>manta)
-			begin
-				if(signb)
-					begin
-						mantr<= manta-mantb;
-						signr<=1;
-					end
-				if(signa)
-					begin
-						mantr<= manta-mantb;
-						signr<=0;
-					end
-				else
-					begin
-						mantr<= manta+mantb;
-						signr<=0;
-					end
-				
-			end
-		else
-			begin
-				if(signb)
-					begin
-						mantr<= 0;
-						signr<=0;
-					end
-				if(signa)
-					begin
-						mantr<= 0;
-						signr<=0;
-					end
-				else
-					begin
-						mantr<= manta+mantb;
-						signr<=0;
-					end
-			end
-	end
-
-	if(mantr[24])
+		if(reset)
 		begin
-			mantr <= mantr >> 1;
-			expr  <= expr + 1;
+			current_state<=3'b000;
 		end
-	
 
-	if (ctr > 0)
-	    begin
-		    if(mantr[ctr-1]!=1)
-	  		begin
-	  	    	mantr<=mantr<<1;
-	     	    	expr<=expr-1;
-		    	ctr<=ctr-1;
-			end
-			else
+		else
+		begin
+			current_state<=next_state;
+		end
+	end
+		
+always @(posedge clk)
+	begin
+		if(start)
+		    begin
+			current_state<=3'b000;
+			done <=0;
+			ctr<=24;
+			expr<=0;
+			sum<=0;
+			signa <= a[31];
+			signb <= b[31];
+			signr<=0;
+			mantr<=0;
+			expa <= a[30:23];
+			expb <= b[30:23];
+			manta <= {1'b1, a[22:0]};
+			mantb <= {1'b1, b[22:0]};  
+		    end
+		    else
+		    begin
+			    if(current_state=3'b000)
+				    begin
+					   if((expa == 0) && (manta == 0))					//00
+						begin
+							mantr<=mantb;
+							expr<=expb;
+							signr<=signb;
+							next_state<=3'b111;
+						end
+					   else
+						   begin
+							   next_state<=3'b001;
+						   end
+				    end
+			    if(current_state=3'b001)
+				    begin
+					    if((expb == 0) && (mantb == 0))
+						begin
+							mantr<=manta;
+							expr<=expa;
+							signr<=signa;
+							next_state<=3'b111;
+						end
+					    else
+						   begin
+							   next_state<=3'b010;
+						   end
+				    end
+			    if(current_state=3'b010)
+				    begin
+					    if(expa==8'b11111111)
+						begin
+							mantr<=manta;
+							expr<=expa;
+							signr<=signa;
+							next_state<=3'b111;
+						end
+					    else
+						   begin
+							   next_state<=3'b011;
+						   end
+				    end
+			    
+			    if(current_state=3'b011)
+				    begin
+					     if(expb==8'b11111111)
+						begin
+							mantr<=mantb;
+							expr<=expb;
+							signr<=signb;
+							next_state<=3'b111;
+						end
+					    else
+						   begin
+							   next_state<=3'b100;
+						   end
+				    end
+			    
+			    if(current_state=3'b100)
+				    begin
+					   	if(expa==expb)
 			begin
-				ctr<=0;
+				expr<= expb;
+				if(manta>mantb)
+					begin
+						if(signb)
+							begin
+								mantr<= manta-mantb;
+								signr<=0;
+							end
+						if(signa)
+							begin
+								mantr<= manta-mantb;
+								signr<=1;
+							end
+						else
+							begin
+								mantr<= manta+mantb;
+								signr<=0;
+							end
+
+					end
+				if(mantb>manta)
+					begin
+						if(signb)
+							begin
+								mantr<= mantb-manta;
+								signr<=1;
+							end
+						if(signa)
+							begin
+								mantr<= mantb-manta;
+								signr<=0;
+							end
+						else
+							begin
+								mantr<= manta+mantb;
+								signr<=0;
+							end
+
+					end
+				else
+					begin
+						if(signb)
+							begin
+								mantr<= 0;
+								signr<=0;
+							end
+						if(signa)
+							begin
+								mantr<= 0;
+								signr<=0;
+							end
+						else
+							begin
+								mantr<= manta+mantb;
+								signr<=0;
+							end
+					end
+
 			end	
-	      end
-	
+			if(expa>expb)
+			begin
+				assign expdiff = expa-expb;
+				mantb <= mantb>>expdiff;
+				expr<= expa;
+				if(manta>mantb)
+					begin
+						if(signb)
+							begin
+								mantr<= manta-mantb;
+								signr<=0;
+							end
+						if(signa)
+							begin
+								mantr<= manta-mantb;
+								signr<=1;
+							end
+						else
+							begin
+								mantr<= manta+mantb;
+								signr<=0;
+							end
 
-	sum<={signr,expr,mantr[22:0]};
-	done<=1;
-	end
+					end
+				if(mantb>manta)
+					begin
+						if(signb)
+							begin
+								mantr<= mantb-manta;
+								signr<=1;
+							end
+						if(signa)
+							begin
+								mantr<= mantb-manta;
+								signr<=0;
+							end
+						else
+							begin
+								mantr<= manta+mantb;
+								signr<=0;
+							end
 
-	end
-	end
-endmodule
+					end
+				else
+					begin
+						if(signb)
+							begin
+								mantr<= 0;
+								signr<=0;
+							end
+						if(signa)
+							begin
+								mantr<= 0;
+								signr<=0;
+							end
+						else
+							begin
+								mantr<= manta+mantb;
+								signr<=0;
+							end
+					end
+			end	
+			if(expb>expa)
+			begin
+				assign expdiff = expb-expa;
+				manta <= manta>>expdiff;
+				expr<= expb;
+				if(manta>mantb)
+					begin
+						if(signb)
+							begin
+								mantr<= manta-mantb;
+								signr<=0;
+							end
+						if(signa)
+							begin
+								mantr<= manta-mantb;
+								signr<=1;
+							end
+						else
+							begin
+								mantr<= manta+mantb;
+								signr<=0;
+							end
+
+					end
+				if(mantb>manta)
+					begin
+						if(signb)
+							begin
+								mantr<= mantb-manta;
+								signr<=1;
+							end
+						if(signa)
+							begin
+								mantr<= mantb-manta;
+								signr<=0;
+							end
+						else
+							begin
+								mantr<= manta+mantb;
+								signr<=0;
+							end
+
+					end
+				else
+					begin
+						if(signb)
+							begin
+								mantr<= 0;
+								signr<=0;
+							end
+						if(signa)
+							begin
+								mantr<= 0;
+								signr<=0;
+							end
+						else
+							begin
+								mantr<= manta+mantb;
+								signr<=0;
+							end
+					end
+			end
+				    end
+
+
+
+			if(mantr[24])
+				begin
+					mantr <= mantr >> 1;
+					expr  <= expr + 1;
+				end
+
+
+			if (ctr > 0)
+			    begin
+				    if(mantr[ctr-1]!=1)
+					begin
+					mantr<=mantr<<1;
+					expr<=expr-1;
+					ctr<=ctr-1;
+					end
+					else
+					begin
+						ctr<=0;
+					end	
+			      end
+
+
+			sum<={signr,expr,mantr[22:0]};
+			done<=1;
+			end
+
+			end
+		end
+	endmodule
