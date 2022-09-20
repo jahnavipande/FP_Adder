@@ -73,7 +73,7 @@ always @(posedge clk)
 						   begin
 							   next_state<=3'b001;
 						   end
-                                $display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
+                                //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
 
 				    end
 			    if(current_state==3'b001)
@@ -90,7 +90,7 @@ always @(posedge clk)
 							   next_state<=3'b010;
 						   end
 
-                                $display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
+                                //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
 				    end
 			    if(current_state==3'b010)
 				    begin
@@ -106,7 +106,7 @@ always @(posedge clk)
 							   next_state<=3'b011;
 						   end
 
-                                $display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
+                                //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
 
 				    end
 			    
@@ -124,7 +124,7 @@ always @(posedge clk)
 							   next_state<=3'b100;
 						   end
 
-                            $display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
+                            //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
 
 				    end
 			    
@@ -340,7 +340,7 @@ always @(posedge clk)
 								end
                         end
 
-                                $display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr); 
+                                //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr); 
 
                     end 
              
@@ -365,7 +365,7 @@ always @(posedge clk)
                                     next_state<=3'b110;
                                 end
 
-                                    $display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
+                                    //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
 
                         end
 
@@ -387,7 +387,7 @@ always @(posedge clk)
                                         end	
                                 end
 
-                                        $display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
+                                        //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
 
                         end
                         
