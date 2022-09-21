@@ -118,14 +118,14 @@ always @(posedge clk)
 
                         else if(expa>expb)
                         begin
-                            mantb <= {signb, mantb[23:1]};
+                            mantb <= {signb, mantb[24:1]};
                             expb<=expb+1;
                             current_state<=3'b010;
                         end	
 
                         else if(expb>expa)
                         begin
-                            manta <= {signa, manta[23:1]};
+                            manta <= {signa, manta[24:1]};
                             expa<=expa+1;
                             current_state<=3'b010;
                         end
