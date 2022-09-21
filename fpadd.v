@@ -9,7 +9,7 @@ module fpadd (
     output [31:0] sum;
     output done;
 	reg [7:0] 	expa, expb, expr, expdiffa, expdiffb;
-	reg [23:0] 	manta, mantb;
+	reg [24:0] 	manta, mantb;
 	reg [25:0]	mantr;
 	reg [0:0] 	signa, signb, signr;
 	reg 		done, round;
@@ -17,10 +17,10 @@ module fpadd (
 	reg [4:0]	ctr;
 	reg [2:0]	current_state, next_state;
 
-always @(*)
+/*always @(*)
 	begin
 			current_state<=next_state;
-	end
+	end*/
 		
 always @(posedge clk)
 	begin
@@ -29,7 +29,7 @@ always @(posedge clk)
 					current_state<=3'b000;
 				end
 
-		if(start)
+		else if(start)
 		    begin
                 current_state<=3'b000;
                 done <=0;
@@ -43,15 +43,15 @@ always @(posedge clk)
                 mantr<=26'b0;
                 expa <= a[30:23];
                 expb <= b[30:23];
-                manta <= {1'b1, a[22:0]};
-                mantb <= {1'b1, b[22:0]};
+                manta <= {2'b01, a[22:0]};
+                mantb <= {2'b01, b[22:0]};
 
 		    end
         else
 		    begin
 
-                expdiffb <= expb-expa;
-                expdiffa <= expa-expb;
+                /*expdiffb <= expb-expa;
+                expdiffa <= expa-expb;*/
 
 			    if(current_state==3'b000)
 				    begin
@@ -60,71 +60,34 @@ always @(posedge clk)
 							mantr<=manta;
 							expr<=expa;
 							signr<=signa;
-							next_state<=3'b101;
+							current_state<=3'b111;
 						end
-
-					    else
-						   begin
-							   next_state<=3'b001;
-						   end
-
-                                //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
-
-				    end
-			    
-			    if(current_state==3'b001)
-				    begin
-					     if(expb==8'b11111111)
+                        else if(expb==8'b11111111)
 						begin
 							mantr<=mantb;
 							expr<=expb;
 							signr<=signb;
-							next_state<=3'b101;
+							current_state<=3'b111;
 						end
-					    else
-						   begin
-							   next_state<=3'b010;
-						   end
-
-                            //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
-
-				    end
-                if(current_state==3'b010)
-
-				    begin
-					   if((expa == 0) && (manta[22:0] == 0))					
-						begin
-							mantr <=mantb;
-							expr<=expb;
-							signr<=signb;
-							next_state<=3'b101;
-
-						end
-					   else
-						   begin
-							   next_state<=3'b011;
-						   end
-                                //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
-
-				    end
-			    if(current_state==3'b011)
-				    begin
-					    if((expb ==0) && (mantb[22:0] == 0))
+                        else if((expb == 0) && (mantb == 0))
 						begin
 							mantr<=manta;
 							expr<=expa;
 							signr<=signa;
-							next_state<=3'b101;
+							current_state<=3'b111;
+                             $display("Damnn Correct");
 						end
-					    else
-						   begin
-							   next_state<=3'b100;
-						   end
+                        else if((expa == 0) && (manta == 0))					//00
+						begin
+							mantr <=mantb;
+							expr<=expb;
+							signr<=signb;
+							current_state<=3'b111;
 
-                                //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
-				    end
+						end
+                    end    
 			    
-			    if(current_state==3'b100)
+			    else if(current_state==3'b001)
 				    begin
                         if(signa)
                             begin
@@ -135,73 +98,85 @@ always @(posedge clk)
                                 mantb<= ~mantb +1;
                             end
 
+                        current_state<=3b'010;
+                    end    
+
+                else if(current_state==3'b010)
+                    begin
 					   	if(expa==expb)
 						begin
-							expr<= expb;	
+							expr<= expb;
+                            current_state==3'b011;	
 						end	
 
-                        if(expa>expb)
+                        else if(expa>expb)
                         begin
-                            mantb <= mantb>>expdiffa;
+                            mantb <= {signb, mantb[24:1]};
+                            expb<=expb+1;
                             expr<= expa;
+                            current_state==3'b010;
                         end	
 
-                        if(expb>expa)
+                        else if(expb>expa)
                         begin
-                            manta <= manta>>expdiffb;
-                            expr<= expb;
+                            manta <= {signa, manta[24:1]};
+                            expa<=expa+1;
+                            expr<= expa;
+                            current_state==3'b010;
                         end
+                    end
 
                                 //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr); 
+
+                else if(current_state==3'b011)
+                    begin               
                         mantr<= manta+mantb;
-                        next_state<=3'b111;
+                        current_state<=3'b100;
                     end 
              
-                    if(current_state==3'b111)   
+                else if(current_state==3'b100)   
                         begin
-                            if(mantr[24:0]==0)
-                                begin
-                                    expr<=0;
-                                end
-
-                            else if(mantr[25])
+                            if(mantr[25])
                                 begin
                                     signr<=1;
                                     mantr<= ~mantr +1;
-
-                                     if(mantr[24])
-                                        begin
-                                            mantr <= mantr >> 1;
-                                            expr  <= expr + 1;
-                                            next_state<=3'b101;
-                                        end
-
-                                    else
-                                        begin
-                                            next_state<=3'b110;
-                                        end
+                                    current_state==3'b101;
                                 end
-                            else begin
+                            else
+                                begin
                                     signr<=0;
-
-                                     if(mantr[24])
-                                        begin
-                                            mantr <= mantr >> 1;
-                                            expr  <= expr + 1;
-                                            next_state<=3'b101;
-                                        end
-
-                                    else
-                                        begin
-                                            next_state<=3'b110;
-                                        end
+                                    current_state==3'b101;
                                 end
+                        end
+
+                else if(current_state==3'b101)
+                        begin
+                            if(mantr==0)
+                                begin
+                                    expr<=0;
+                                    current_state<=3'b111
+                                end
+
+                            else if(mantr[24])
+                                begin
+                                    mantr <= mantr >> 1;
+                                    expr <= expr + 1;
+                                    current_state<=3'b111;
+                                end
+
+                            else if(mantr[23])
+                                begin
+                                    current_state<=3'b111;
+                                end
+                            else
+                                begin
+                                    current_state<=3'b110;
+                                end
+                        end
 
                                     //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
 
-                        end
-
-                    if(current_state==3'b110)
+                else if(current_state==3'b110)
                         begin
                             if (ctr > 0)
                                 begin
@@ -210,25 +185,28 @@ always @(posedge clk)
                                             mantr<=mantr<<1;
                                             expr<=expr-1;
                                             ctr<=ctr-1;
+                                            current_state<=3'b110;
                                         end
                                     else
                                         begin
                                             ctr<=0;
-                                            next_state<=3'b101;                                    
+                                            current_state<=3'b111;                                    
                                         end	
                                 end
 
                                         //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
-
+                            else
+                                begin
+                                    current_state<=3'b111;
+                                end
                         end
-                        
-                    if(current_state==3'b101)
-                        begin
-                            sum<={signr,expr,mantr[22:0]};
-			                done<=1;
-
-                                    $display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
-                        end
+                    
+                else if(current_state==3'b111)
+                    begin
+                        sum<={signr,expr,mantr[22:0]};
+                        done<=1;
+                                $display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
+                    end
 			
 			end
 
