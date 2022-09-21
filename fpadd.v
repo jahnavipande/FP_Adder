@@ -196,7 +196,7 @@ always @(posedge clk)
                     begin
                         sum<={signr,expr,mantr[22:0]};
                         done<=1;
-                                $display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
+                                //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
                     end
 			
 			end
