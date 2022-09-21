@@ -114,7 +114,7 @@ always @(posedge clk)
                 if(current_state==3'b010)
 
 				    begin
-					   if((expa == 8'b0) && (manta[22:0] == 23'b0))					
+					   if((expa == 0) && (manta[22:0] == 0))					
 						begin
 							mantr <=mantb;
 							expr<=expb;
@@ -131,7 +131,7 @@ always @(posedge clk)
 				    end
 			    if(current_state==3'b011)
 				    begin
-					    if((expb == 8'b0) && (mantb[22:0] == 23'b0))
+					    if((expb ==0) && (mantb[22:0] == 0))
 						begin
 							mantr<=manta;
 							expr<=expa;
@@ -194,19 +194,36 @@ always @(posedge clk)
                                 begin
                                     signr<=1;
                                     mantr<= ~mantr +1;
+
+                                     if(mantr[24])
+                                        begin
+                                            mantr <= mantr >> 1;
+                                            expr  <= expr + 1;
+                                            next_state<=3'b101;
+                                        end
+
+                                    else
+                                        begin
+                                            next_state<=3'b110;
+                                        end
+                                end
+                            else begin
+                                    signr<=0;
+
+                                     if(mantr[24])
+                                        begin
+                                            mantr <= mantr >> 1;
+                                            expr  <= expr + 1;
+                                            next_state<=3'b101;
+                                        end
+
+                                    else
+                                        begin
+                                            next_state<=3'b110;
+                                        end
                                 end
 
-                            if(mantr[24])
-                                begin
-                                    mantr <= mantr >> 1;
-                                    expr  <= expr + 1;
-                                    next_state<=3'b110;
-                                end
-
-                            else
-                                begin
-                                    next_state<=3'b110;
-                                end
+                           
 
                                     //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
 
