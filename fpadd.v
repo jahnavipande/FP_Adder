@@ -142,7 +142,7 @@ always @(posedge clk)
                             if(mantr[25])
                                 begin
                                     signr<=1;
-                                    mantr<= ~mantr +1;
+                                    mantr<= -mantr;
                                     current_state<=3'b101;
                                 end
                             else
