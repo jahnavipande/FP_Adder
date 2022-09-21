@@ -95,17 +95,12 @@ always @(posedge clk)
                         if(signa)
                             begin
                                 manta<= ~manta +1;
-                                current_state<=3'b010;
                             end
                         if(signb)
                             begin
                                 mantb<= ~mantb +1;
-                                current_state<=3'b010;
                             end
-                        else
-                            begin
                                 current_state<=3'b010;
-                            end
                     end    
 
                 else if(current_state==3'b010)
