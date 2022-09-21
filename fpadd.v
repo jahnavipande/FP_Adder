@@ -76,7 +76,7 @@ always @(posedge clk)
 							current_state<=3'b111;
                              $display("Damnn Correct");
 						end
-                        else if((expa == 0) && (manta == 0))					//00
+                        else if((expa == 0) && (manta == 0))				
 						begin
 							mantr <=mantb;
 							expr<=expb;
@@ -120,7 +120,6 @@ always @(posedge clk)
                         begin
                             mantb <= {signb, mantb[24:1]};
                             expb<=expb+1;
-                            expr<= expa;
                             current_state<=3'b010;
                         end	
 
@@ -128,7 +127,6 @@ always @(posedge clk)
                         begin
                             manta <= {signa, manta[24:1]};
                             expa<=expa+1;
-                            expr<= expb;
                             current_state<=3'b010;
                         end
                     end
