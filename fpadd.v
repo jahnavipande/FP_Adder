@@ -19,20 +19,16 @@ module fpadd (
 
 always @(*)
 	begin
-
-		if(reset)
-		begin
-			current_state<=3'b000;
-		end
-
-		else
-		begin
 			current_state<=next_state;
-		end
 	end
 		
 always @(posedge clk)
 	begin
+		if(reset)
+				begin
+					current_state<=3'b000;
+				end
+
 		if(start)
 		    begin
                 current_state<=3'b000;
@@ -152,92 +148,18 @@ always @(posedge clk)
 			    
 			    if(current_state==3'b100)
 				    begin
+                        if(signa)
+                            begin
+                                manta<= ~manta +1;
+                            end
+                        if(signb)
+                            begin
+                                mantb<= ~mantb +1;
+                            end
+
 					   	if(expa==expb)
 						begin
-							expr<= expb;
-							if(manta>mantb)
-								begin
-									if({signb,signa}==2'b10)
-										begin
-											mantr<= manta-mantb;
-											signr<=0;
-                                            next_state<=3'b111;
-										end
-									if({signb,signa}==2'b10)
-										begin
-											mantr<= manta-mantb;
-											signr<=1;
-                                            next_state<=3'b111;
-										end
-                                    if(signa && signb)
-										begin
-											mantr<= manta+mantb;
-											signr<=1;
-                                            next_state<=3'b111;
-										end
-									else
-										begin
-											mantr<= manta+mantb;
-											signr<=0;
-                                            next_state<=3'b111;
-										end
-								end
-							if(mantb>manta)
-								begin
-									if({signb,signa}==2'b10)
-										begin
-											mantr<= mantb-manta;
-											signr<=1;
-                                            next_state<=3'b111;
-										end
-									if({signb,signa}==2'b01)
-										begin
-											mantr<= mantb-manta;
-											signr<=0;
-                                            next_state<=3'b111;
-										end
-                                    if(signa && signb)
-										begin
-											mantr<= manta+mantb;
-											signr<=1;
-                                            next_state<=3'b111;
-										end
-									else
-										begin
-											mantr<= manta+mantb;
-											signr<=0;
-                                            next_state<=3'b111;
-										end
-                                end
-											
-							else
-								begin
-									if({signb,signa}==2'b10)
-										begin
-											mantr<= 0;
-											signr<=0;
-                                            next_state<=3'b111;
-										end
-									if({signb,signa}==2'b01)
-										begin
-											mantr<= 0;
-											signr<=0;
-                                            next_state<=3'b111;
-										end
-                                    if(signa && signb)
-										begin
-											mantr<= manta+mantb;
-											signr<=1;
-                                            next_state<=3'b111;
-										end
-									else
-										begin
-											mantr<= manta+mantb;
-											signr<=0;
-                                            next_state<=3'b111;
-										end
-								end
-
+							expr<= expb;	
 						end	
 
                         if(expa>expb)
@@ -249,88 +171,7 @@ always @(posedge clk)
                                 mantb<=mantb+1;
                                 end*/  
 
-                            if(manta>mantb)
-								begin
-									if({signb,signa}==2'b10)
-										begin
-											mantr<= manta-mantb;
-											signr<=0;
-                                            next_state<=3'b111;
-										end
-									if({signb,signa}==2'b01)
-										begin
-											mantr<= manta-mantb;
-											signr<=1;
-                                            next_state<=3'b111;
-										end
-                                    if(signa && signb)
-										begin
-											mantr<= manta+mantb;
-											signr<=1;
-                                            next_state<=3'b111;
-										end
-									else
-										begin
-											mantr<= manta+mantb;
-											signr<=0;
-                                            next_state<=3'b111;
-										end
-								end
-							if(mantb>manta)
-								begin
-									if({signb,signa}==2'b10)
-										begin
-											mantr<= mantb-manta;
-											signr<=1;
-                                            next_state<=3'b111;
-										end
-									if({signb,signa}==2'b01)
-										begin
-											mantr<= mantb-manta;
-											signr<=0;
-                                            next_state<=3'b111;
-										end
-                                    if(signa && signb)
-										begin
-											mantr<= manta+mantb;
-											signr<=1;
-                                            next_state<=3'b111;
-										end
-									else
-										begin
-											mantr<= manta+mantb;
-											signr<=0;
-                                            next_state<=3'b111;
-										end
-                                end
-											
-							else
-								begin
-									if({signb,signa}==2'b10)
-										begin
-											mantr<= 0;
-											signr<=0;
-                                            next_state<=3'b111;
-										end
-									if({signb,signa}==2'b01)
-										begin
-											mantr<= 0;
-											signr<=0;
-                                            next_state<=3'b111;
-										end
-                                    if(signa && signb)
-										begin
-											mantr<= manta+mantb;
-											signr<=1;
-                                            next_state<=3'b111;
-										end
-									else
-										begin
-											mantr<= manta+mantb;
-											signr<=0;
-                                            next_state<=3'b111;
-										end
-								end
+                            
                         end	
 
                         if(expb>expa)
@@ -340,102 +181,19 @@ always @(posedge clk)
                             /*if(a[expdiffb-1]) begin
                                 manta<=manta+1;
                                 end*/
-
-                            if(manta>mantb)
-								begin
-									if({signb,signa}==2'b10)
-										begin
-											mantr<= manta-mantb;
-											signr<=0;
-                                            next_state<=3'b111;
-										end
-									if({signb,signa}==2'b01)
-										begin
-											mantr<= manta-mantb;
-											signr<=1;
-                                            next_state<=3'b111;
-										end
-                                    if(signa && signb)
-										begin
-											mantr<= manta+mantb;
-											signr<=1;
-                                            next_state<=3'b111;
-										end
-									else
-										begin
-											mantr<= manta+mantb;
-											signr<=0;
-                                            next_state<=3'b111;
-										end
-								end
-							if(mantb>manta)
-								begin
-									if({signb,signa}==2'b10)
-										begin
-											mantr<= mantb-manta;
-											signr<=1;
-                                            next_state<=3'b111;
-										end
-									if({signb,signa}==2'b01)
-										begin
-											mantr<= mantb-manta;
-											signr<=0;
-                                            next_state<=3'b111;
-										end
-                                    if(signa && signb)
-										begin
-											mantr<= manta+mantb;
-											signr<=1;
-                                            next_state<=3'b111;
-										end
-									else
-										begin
-											mantr<= manta+mantb;
-											signr<=0;
-                                            next_state<=3'b111;
-										end
-                                end
-											
-							else
-								begin
-									if({signb,signa}==2'b10)
-										begin
-											mantr<= 0;
-											signr<=0;
-                                            next_state<=3'b111;
-										end
-									if({signb,signa}==2'b01)
-										begin
-											mantr<= 0;
-											signr<=0;
-                                            next_state<=3'b111;
-										end
-                                    if(signa && signb)
-										begin
-											mantr<= manta+mantb;
-											signr<=1;
-                                            next_state<=3'b111;
-										end
-									else
-										begin
-											mantr<= manta+mantb;
-											signr<=0;
-                                            next_state<=3'b111;
-										end
-								end
                         end
 
                                 //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr); 
-
+                        mantr<= manta+mantb;
+                        next_state<=3'b111;
                     end 
              
                     if(current_state==3'b111)   
                         begin
                             if(mantr[25])
                                 begin
-                                    mantr <= mantr >> 2;
-                                    expr  <= expr + 2;
-                                    next_state<=3'b110;
+                                    signr<=1;
+                                    mantr<= ~mantr +1;
                                 end
 
                             if(mantr[24])
