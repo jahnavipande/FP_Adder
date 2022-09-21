@@ -124,7 +124,7 @@ always @(posedge clk)
                         begin
                             manta <= {signa, manta[24:1]};
                             expa<=expa+1;
-                            expr<= expa;
+                            expr<= expb;
                             current_state<=3'b010;
                         end
                     end
