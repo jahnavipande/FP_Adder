@@ -17,7 +17,7 @@ module fpadd (
 	reg [4:0]	ctr;
 	reg [2:0]	current_state, next_state;
 
-always @(posedge clk)
+always @(*)
 	begin
 
 		if(reset)
@@ -54,13 +54,10 @@ always @(posedge clk)
         else
 		    begin
 
-                /*expdiffb <= expb-expa;
-                expdiffa <= expa-expb;*/
-
-			    if(current_state==3'b000)
-
                 expdiffb <= expb-expa;
                 expdiffa <= expa-expb;
+
+			    if(current_state==3'b000)
 				    begin
 					    if(expa==8'b11111111)
 						begin
