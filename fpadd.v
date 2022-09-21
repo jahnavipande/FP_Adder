@@ -95,13 +95,17 @@ always @(posedge clk)
                         if(signa)
                             begin
                                 manta<= ~manta +1;
+                                current_state<=3'b010;
                             end
                         if(signb)
                             begin
                                 mantb<= ~mantb +1;
+                                current_state<=3'b010;
                             end
-
-                        current_state<=3'b010;
+                        else
+                            begin
+                                current_state<=3'b010;
+                            end
                     end    
 
                 else if(current_state==3'b010)
@@ -181,28 +185,20 @@ always @(posedge clk)
 
                 else if(current_state==3'b110)
                         begin
-                            if (ctr > 0)
+                            if(mantr[ctr-1]!=1)
                                 begin
-                                    if(mantr[ctr-1]!=1)
-                                        begin
-                                            mantr<=mantr<<1;
-                                            expr<=expr-1;
-                                            ctr<=ctr-1;
-                                            current_state<=3'b110;
-                                        end
-                                    else
-                                        begin
-                                            ctr<=0;
-                                            current_state<=3'b111;                                    
-                                        end	
+                                    mantr<=mantr<<1;
+                                    expr<=expr-1;
+                                    ctr<=ctr-1;
+                                    current_state<=3'b110;
                                 end
-
-                                        //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
                             else
                                 begin
-                                    current_state<=3'b111;
-                                end
+                                    current_state<=3'b111;                                    
+                                end	
                         end
+
+                                        //$display("current_state=%b,signr=%b,expr=%b,mantr=%b",current_state,signr,expr,mantr);
                     
                 else if(current_state==3'b111)
                     begin
