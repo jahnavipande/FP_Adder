@@ -185,11 +185,10 @@ always @(posedge clk)
 
                 else if(current_state==3'b110)
                         begin
-                            if(mantr[ctr-1]!=1)
+                            if(mantr[23]==0)
                                 begin
                                     mantr<=mantr<<1;
                                     expr<=expr-1;
-                                    ctr<=ctr-1;
                                     current_state<=3'b110;
                                 end
                             else
