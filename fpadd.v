@@ -15,7 +15,7 @@ module fpadd (
 	reg 		done, round;
 	reg [31:0]	sum;
 	reg [4:0]	ctr;
-	reg [2:0]	current_state, next_state;
+	reg [2:0]	current_state;
 
 /*always @(*)
 	begin
@@ -98,7 +98,7 @@ always @(posedge clk)
                                 mantb<= ~mantb +1;
                             end
 
-                        current_state<=3b'010;
+                        current_state<=3'b010;
                     end    
 
                 else if(current_state==3'b010)
@@ -106,7 +106,7 @@ always @(posedge clk)
 					   	if(expa==expb)
 						begin
 							expr<= expb;
-                            current_state==3'b011;	
+                            current_state<=3'b011;	
 						end	
 
                         else if(expa>expb)
@@ -114,7 +114,7 @@ always @(posedge clk)
                             mantb <= {signb, mantb[24:1]};
                             expb<=expb+1;
                             expr<= expa;
-                            current_state==3'b010;
+                            current_state<=3'b010;
                         end	
 
                         else if(expb>expa)
@@ -122,7 +122,7 @@ always @(posedge clk)
                             manta <= {signa, manta[24:1]};
                             expa<=expa+1;
                             expr<= expa;
-                            current_state==3'b010;
+                            current_state<=3'b010;
                         end
                     end
 
@@ -140,12 +140,12 @@ always @(posedge clk)
                                 begin
                                     signr<=1;
                                     mantr<= ~mantr +1;
-                                    current_state==3'b101;
+                                    current_state<=3'b101;
                                 end
                             else
                                 begin
                                     signr<=0;
-                                    current_state==3'b101;
+                                    current_state<=3'b101;
                                 end
                         end
 
@@ -154,7 +154,7 @@ always @(posedge clk)
                             if(mantr==0)
                                 begin
                                     expr<=0;
-                                    current_state<=3'b111
+                                    current_state<=3'b111;
                                 end
 
                             else if(mantr[24])
