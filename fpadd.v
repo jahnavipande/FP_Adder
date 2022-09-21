@@ -35,7 +35,6 @@ always @(posedge clk)
                 done <=0;
                 ctr<=24;
                 expr<=0;
-                round<=0;
                 sum<=0;
                 signa <= a[31];
                 signb <= b[31];
