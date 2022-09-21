@@ -8,11 +8,11 @@ module fpadd (
     input [31:0] a, b;
     output [31:0] sum;
     output done;
-	reg [7:0] 	expa, expb, expr, expdiffa, expdiffb;
+	reg [7:0] 	expa, expb, expr;
 	reg [24:0] 	manta, mantb;
 	reg [25:0]	mantr;
 	reg [0:0] 	signa, signb, signr;
-	reg 		done, round;
+	reg 		done;
 	reg [31:0]	sum;
 	reg [4:0]	ctr;
 	reg [2:0]	current_state;
@@ -85,6 +85,10 @@ always @(posedge clk)
 							current_state<=3'b111;
 
 						end
+                        else
+                            begin
+                                current_state<=3'b001;
+                            end
                     end    
 			    
 			    else if(current_state==3'b001)
