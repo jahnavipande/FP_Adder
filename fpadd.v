@@ -65,6 +65,7 @@ always @(posedge clk)
 							expr<=expa;
 							signr<=signa;
 							current_state<=4'b0111;
+							//$display("signr=%1b, expr=%8b, mantr=%26b\n", signr, expr, mantr);
 						end
                         else if(expb==8'b11111111)
 						begin
@@ -72,21 +73,23 @@ always @(posedge clk)
 							expr<=expb;
 							signr<=signb;
 							current_state<=4'b0111;
+					
 						end
-                        else if((expb == 0) && (mantb == 0))
+                        else if((expb == 0) && (mantb[22:0] == 0))
 						begin
 							mantr<=manta;
 							expr<=expa;
 							signr<=signa;
 							current_state<=4'b0111;
-                             $display("Damnn Correct");
+                 
 						end
-                        else if((expa == 0) && (manta == 0))				
+                        else if((expa == 0) && (manta[22:0] == 0))				
 						begin
 							mantr <=mantb;
 							expr<=expb;
 							signr<=signb;
 							current_state<=4'b0111;
+					
 
 						end
                         else
